@@ -557,6 +557,11 @@ promiseWorker = function (script, message) {
     w.onerror = function (e) {
         d.reject(e);
     };
+    d.always(function () {
+        if (script.substring && script.substring(0, 5) === 'blob:') {
+            window.URL.revokeObjectURL(script);
+        }
+    });
     w.postMessage(message);
     return d.promise();
 }
