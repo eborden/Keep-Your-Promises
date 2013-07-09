@@ -225,8 +225,8 @@ $.ajax({
     type: 'get',
 }).then(function (data) {
     console.log(data);
-}).then(function (data) {
-    console.log(data); //same as before
+}).then(function (sameData) {
+    console.log(sameData); //same as before
 });
                         </code></pre>
                     </section>
@@ -241,8 +241,8 @@ $.ajax({
         url: '/other-data/' + data,
         type: 'get'
     });
-}).then(function (data) {
-    console.log(data);// result of other data
+}).then(function (otherData) {
+    console.log(otherData);// result of other data
 });
                         </code></pre>
                     </section>
@@ -254,8 +254,8 @@ $.ajax({
     type: 'get',
 }).then(function (data) {
     return 5;
-}).then(function (data) {
-    console.log(data);//5
+}).then(function (value) {
+    console.log(value);//5
 });
                         </code></pre>
                     </section>
