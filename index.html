@@ -473,11 +473,12 @@ function promiseStuff (test) {
                     <section>
                         <h2>Mock Helper</h2>
                         <pre><code>
-function mockPromise (return) {
+function mockPromise () {
     return function () {
-        var d = $.Deferred();
+        var d = $.Deferred(),
+            args = arguments;
         setTimeout(function () {
-            d.resolve(return.apply(null, arguments));
+            d.resolve.apply(null, args);
         }, 0)
         return d.promise();
     }
@@ -513,6 +514,29 @@ promiseStuff().then(transformData).then(log);
                         <li>Are functionaly composable</li>
                         <li>Are more testable</li>
                     </ol>
+                </section>
+
+                <section>
+                    <h2>Piping With Promises</h2>
+                    <pre><code>
+promisePipe = function () {
+    var d = $.Deferred(),
+        args = arguments;
+    setTimeout(function () {
+        d.resolve.apply(null, args);
+    }, 0);
+    return d.promise();
+}
+function inc (val) {
+    return val + 1;
+}
+function log (val) {
+   console.log(val);
+}
+promisePipe(7).then(inc).then(inc).then(log);
+console.log(20)
+                    </code></pre>
+                    </code></pre>
                 </section>
 
                 <section>
