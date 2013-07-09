@@ -517,8 +517,9 @@ promiseStuff().then(transformData).then(log);
                 </section>
 
                 <section>
-                    <h2>Piping With Promises</h2>
-                    <pre><code>
+                    <section>
+                        <h2>Piping With Promises</h2>
+                        <pre><code>
 promisePipe = function () {
     var d = $.Deferred(),
         args = arguments;
@@ -535,8 +536,23 @@ function log (val) {
 }
 promisePipe(7).then(inc).then(inc).then(log);
 console.log(20)
-                    </code></pre>
-                    </code></pre>
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Promise Worker</h2>
+                        <pre><code>
+promiseWorker = function (script, message) {
+    var d = $.Deferred(),
+        w = new Worker(script);
+    w.onmessage = function (e) {
+        d.resolve(e);
+    };
+    w.postMessage(message);
+    return d.promise();
+}
+promiseWorker('foo.js', ['data', 'set', 'for', 'worker']);
+                        </code></pre>
+                    </section>
                 </section>
 
                 <section>
