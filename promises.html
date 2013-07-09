@@ -516,6 +516,30 @@ promiseStuff().then(transformData).then(log);
                 </section>
 
                 <section>
+                    <h2>Pipe Values</h2>
+                    <pre><code>
+promisePipe = function () {
+    var d = $.Deferred(),
+        args = arguments;
+    setTimeout(function () {
+        d.resolve.apply(null, args);
+    }, 0);
+    return d.promise();
+}
+                    </code></pre>
+                    <pre class="fragment"><code>
+function inc (val) {
+    return val + 1;
+}
+function log (val) {
+    console.log(val);
+}
+promisePipe(7).then(inc).then(inc).then(log);
+console.log(20);
+                    </code></pre>
+                </section>
+
+                <section>
                     <h1>Any Negatives?</h1>
                 </section>
 
