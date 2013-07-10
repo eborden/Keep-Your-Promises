@@ -562,6 +562,7 @@ promiseWorker = function (script, message) {
         if (script.substring && script.substring(0, 5) === 'blob:') {
             window.URL.revokeObjectURL(script);
         }
+        w.terminate();
     });
     w.postMessage(message);
     return d.promise();
