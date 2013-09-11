@@ -18,7 +18,21 @@
 		<link rel="stylesheet" href="revealjs/css/theme/default.css" id="theme">
 
 		<!-- For syntax highlighting -->
-		<link rel="stylesheet" href="revealjs/lib/css/zenburn.css">
+        <link rel="stylesheet" href="revealjs/lib/css/zenburn.css">
+        <style>
+            .reveal .cloud {margin: 0;list-style: none; text-align: center;}
+            .reveal .cloud li {display: inline-block;}
+            .reveal .cloud li:first-child{font-size: 1.1em;}
+            .reveal .cloud li:nth-child(2){font-size: 1.7em;}
+            .reveal .cloud li:nth-child(3){font-size: 1em;}
+            .reveal .cloud li:nth-child(4){font-size: 1.7em;}
+            .reveal .cloud li:nth-child(5){font-size: 1.4em;}
+            .reveal .cloud li:nth-child(6){font-size: 1.1em;}
+            .reveal .cloud li:nth-child(7){font-size: 1.8em;}
+            .reveal .cloud li:nth-child(8){font-size: 1em;}
+            .reveal .cloud li:nth-child(9){font-size: .9em;}
+            .reveal .cloud li:nth-child(10){font-size: 1.5em;}
+        </style>
 
 		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
 		<script>
@@ -35,558 +49,554 @@
 		<div class="reveal">
 
 			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-				<section>
-					<h1>Keep Your Promises</h1>
-					<h3>and avoid nasty callbacks</h3>
-					<p>
-						<small>Created by <a href="http://www.evan-borden.com">Evan Borden</a> / <a href="http://twitter.com/evanborden">@evanborden</a></small>
-					</p>
-				</section>
-                
-				<section>
-					<h2>We are going to discuss</h2>
-                    <p>Promises and why they are...</p>
-                    <ul>
-                        <li>better than callbacks for async tasks</li>
-                        <li>more modular</li>
-                        <li>more testable</li>
-                    </ul>
-				</section>
+            <div class="slides">
+                <section>
+                    <section>
+                        <h1>Keep Your Promises</h1>
+                        <h3>and avoid nasty callbacks</h3>
+                        <p>
+                            <small>Created by <a href="http://www.evan-borden.com">Evan Borden</a> / <a href="http://twitter.com/evanborden">@evanborden</a></small>
+                        </p>
+                    </section>
+                    
+                    <section>
+                        <h2>Evan Rutledge Borden</h2>
+                    </section>
 
-				<section>
-					<h2>Asynchronous</h2>
-					<ul>
-                        <li>Ajax</li>
-                        <li>setTimeout</li>
-                        <li>Web Workers</li>
-                        <li>Animation</li>
-					</ul>
+                    <section>
+                        <img src="./usm.jpg" alt="Union Street Media" /><br />
+                        <img src="./usm.png" alt="Union Street Media" />
+                    </section>
+
+                    <section>
+                        <img src="./javascript.png" alt="JavaScript" />
+                    </section>
+
+                    <section>
+                        <img src="./haskell.png" alt="Haskell" />
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>We are going to discuss</h2>
+                        <p>Promises and why they are...</p>
+                        <ul>
+                            <li>better than callbacks for async tasks</li>
+                            <li>more readable</li>
+                            <li>more modular</li>
+                            <li>more testable</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>Asynchronous Events</h3>
+                        <h4>&</h4>
+                        <h3>Continuation Passing Style</h3>
+                    </section>
+
+                    <section>
+                        <ul class="cloud">
+                            <li>functional programming</li>
+                            <li>composition</li>
+                            <li>partial application</li>
+                            <li>side effects</li>
+                            <li>unit testing</li>
+                            <li>fluent interfaces</li>
+                            <li>coupling</li>
+                            <li>finite state machines</li>
+                            <li>separation of concerns</li>
+                            <li>the DRY principle</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>Fat Arrows</h2>
+                    </section>
+                </section>
+
+                <section>
+                    <h1>Ask Questions</h1>
+                </section>
+
+                <section>
+                    <section>
+                        <h1>Fat Arrows</h1>
+                    </section>
+                    <section>
+                        <h2>Alternate Syntax</h2>
+                        <pre><code data-trim class="javascript">
+function (a, b) {
+    return a + b;
+}
+
+(a, b) => a + b;
+
+(a, b) => {
+    return a + b;
+}
+                        </code></pre>
+                        <p class="fragment">There Are Other Rules</p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h1>Asynchronous</h1>
+                    </section>
+                    <section>
+                        <blockquote>
+                            If you wish to make an apple pie from scratch, you must first invent the universe.
+                        </blockquote>
+                        <small>Carl Sagan</small>
+                    </section>
+                    <section>
+                        <h2>Async In Javascript</h2>
+                        <ul>
+                            <li>Ajax</li>
+                            <li>setTimeout</li>
+                            <li>Animation</li>
+                            <li>Web Workers</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <pre><code data-trim class="javascript">
+var x = ‘hello’;
+
+setTimeout(() => {
+    x = ‘world’;
+    console.log(x);
+}, 100);
+
+console.log(x);
+//hello
+//world
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Threads</h2>
+                        <p>C, Java, etc.</p>
+                    </section>
+                    <section>
+                        <h2>Event Loop</h2>
+                        <img src="event-loop.svg" />
+                        <p><small>Courtesy of Mozilla</small></p>
+                    </section>
+                    <section>
+                        <h2>Async Is Hard</h2>
+                        <p>Complicated, unpredictable, hard to reason about.</p>
+                    </section>
                 </section>
 
 				<section>
                     <section>
-                        <h2>Callback</h2>
-                        <pre><code>
-$.get('/my-url/', function (data) {
-    //do stuff later
-    alert(data);
+                        <h1>Callbacks</h1>
+                        <p>Continuation Passing Style</p>
+                    </section>
+                    <section>
+                        <h2>BYOB</h2>
+                        <p>Bring Your Own Behavior</p>
+                    </section>
+                    <section>
+                        <h3>Pass Behavior Via Callback</h3>
+                        <pre><code data-trim class="javascript">
+add = (x, y, callback) => callback(x + y);
+
+add(1, 2, (result) => {
+    console.log(result);
+});
+
+//3
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>jQuery Ajax</h2>
+                        <pre><code data-trim class="javascript">
+$.get(‘/my-url/’, (result) => {
+    $(‘body’).html(result);
 });
                         </code></pre>
                     </section>
                     <section>
-                        <h2>Continuation-passing Style</h2>
-                        <p>Generalized functions with behavior supplied by the user</p>
+                        <h2>High Order Functions</h2>
+                        <pre><code data-trim class="javascript">
+array.map(x => x + 1);
+array.filter(x => x > 2);
+                        </code></pre>
                     </section>
-				</section>
+                </section>
+
+                <section>
+                    <section>
+                        <h1>Why Not Async?</h1>
+                    </section>
+                    <section>
+                        <h2>Side Effects and Composition</h2>
+                    </section>
+                    <section>
+                        <h2>Side Effects</h2>
+                    </section>
+                    <section>
+                        <pre><code data-trim class="javascript">
+$.get(‘/url/’, (string) => {
+    string.toUpperCase(); // This is useless and not affecting state
+});
+
+$.get(‘/url/’, (string) => {
+    $(‘.msg’).text(string); // Something useful and affecting state
+});
+
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>Limiting Side Effects</h3>
+                        <p>...decreases the complexity of code.</p>
+                    </section>
+                    <section>
+                        <h3>Encourges Bad Stateful Practice</h3>
+                        <pre><code data-trim class="javascript">
+$.get(‘/sales-history/’, (salesJson) => {
+   var totalSales = 0; 
+   for (var i = 0, l = salesJson.length; i < l; i++) {
+      totalSales += salesJson[i].price;
+   }
+   //inserts some number
+   $(‘#total-sales’).text(totalSales);
+}, ‘json’);
+                        </code></pre>
+                        <p>Very one off</p>
+                    </section>
+                    <section>
+                        <h2>Refactored and DRY</h2>
+                        <pre><code data-trim class="javascript">
+//Reusable functions
+property = prop => obj => obj[prop];
+sum = a => a.reduce(((acc, x) => acc + x;), 0);
+
+totalSales = json => sum(json.map(property(‘price’)));
+
+$.get(‘/sales-history/’, (salesJson) => {
+    //inserts some number
+    $(‘#total-sales’).text(totalSales(salesJson));
+}, ‘json’);
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Pyramid Of Death</h2>
+                        <pre><code data-trim class="javascript">
+$.get(‘url’, (data) => {
+   $.get(‘other-url’, data, (otherData) => {
+      $.get(‘another-url’, otherData, (anotherData) => {
+         $.get(‘more-url’, anotherData, (moreData) => {
+             //holy shit finally do something.
+         });
+      });
+   });
+});
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Parrallel</h2>
+                        <pre><code data-trim class="javascript">
+var state = [],
+        timer = false,
+    observe = (state, index) => (data) => state[index] = data,
+    collectUnfufilled = () => state.filter(x => x == undefined);
+
+$.get(‘url’, observe(state, 0));
+$.get(‘other-url’, observe(state, 1));
+$.get(‘another-url’, observe(state, 2));
+$.get(‘more-url’, observe(state, 3));
+
+timer = setInterval(function () {
+    if (!collectUnfulfilled().length && state.length == 4) {
+        clearInterval(time);
+        //holy shit finally do something.
+    }
+}, 10),
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Async Module</h2>
+                        <pre><code data-trim class="javascript">
+async.parallel([
+   resolver => {
+        $.get(‘url’, (data) => {
+            resolver(null, data);
+        });
+    },
+   resolver => {
+        $.get(‘other-url’, (otherData) => {
+            resolver(null, otherData);
+        });
+    },
+   resolver => {
+        $.get(‘another-url’, (anotherData) => {
+            resolver(null, anotherData);
+        });
+    },
+   resolver => {
+        $.get(‘more-url’, (moreData) => {
+            resolver(null, moreData);
+        });
+    },
+], (errors, results) => {
+    //do things
+});
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Yo Dawg!</h2>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>Not Composable</h1>
+                    </section>
+                    <section>
+                        <h2>Synchronous</h2>
+                        <pre><code data-trim class="javascript">
+salesJson = () => [{price: 12}, {price: 33}, ...];
+
+dot = prop => obj => obj[prop];
+sum = a => a.reduce(((acc, x) => acc + x;), 0);
+
+totalSales = json => sum(json.map(dot(‘price’)));
+
+$(‘#total-sales’).html(
+    totalSales(
+        salesJson()));
+//inserts some number
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Async Isn't Composable</h2>
+                        <pre><code data-trim class="javascript">
+$(‘#total-sales’).html(
+    totalSales(
+        $.get.bind(null, ‘/sales-history/’, ‘json’)));
+//Error
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Is there a solution?</h2>
+                    </section>
+                </section>
 
 				<section>
                     <section>
-                        <h2>Promise</h2>
-                        <p>A declaration or assurance that one will do a particular thing...</p>
+                        <h2>Promises</h2>
+                        <blockquote>
+                            A declaration or assurance that one will do a particular thing or that a particular thing will happen.
+                        </blockquote>
+                        <small>Oxford English Dictionary</small>
                     </section>
                     <section>
                         <h2>Promises/A</h2>
-                        <p>A promise represents the eventual value returned from the single completion of an operation</p>
+                        <blockquote>A promise represents the eventual value returned from the single completion of an operation</blockquote>
                         <small><a href="http://wiki.commonjs.org/wiki/Promises/A">Common JS Spec</a></small>
                     </section>
                     <section>
-                        <h2>jQuery Promises</h2>
-                        <pre><code>
-$.get('/my-url/')
- .then(function (data) {
-    //do stuff later
-    alert(data);
- });
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Promise Are Values</h2>
-                        <pre><code>
-var promise = $.get('/my-url/');
-promise.then(function (data) {
-    //do stuff later
-    alert(data);
-});
-                        </code></pre>
-                        <aside class="notes">Callbacks affect values, promises return values to be affected.</aside>
-                    </section>
-                </section>
-
-                <section>
-                    <section>
-                        <h2>Chaining Async</h2>
-                    </section>
-                    <section>
-                        <h2>Continuation-Passing</h2>
-                        <pre><code>
-$.ajax({
-    url: '/my-data/',
-    type: 'get',
-    success: function (data) {
-        $.ajax({
-            url: '/other-data/' + data,
-            type: 'get',
-            success: function (moreData) {
-                console.log(moreData);
-            }
-        });
-    }
-})
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Gets Ugly Quick</h2>
-                        <pre><code>
-$.ajax({
-    url: '/my-data/',
-    type: 'get',
-    success: function (data) {
-        $.ajax({
-            url: '/other-data/' + data,
-            type: 'get',
-            success: function (data) {
-                $.ajax({
-                    url: '/other-data/' + data,
-                    type: 'get',
-                    success: function (data) {
-                        $.ajax({
-                            url: '/other-data/' + data,
-                            type: 'get',
-                            success: function (data) {
-                                console.log(data);
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    }
-})
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Flatter and Fluent</h2>
-                        <pre><code>
-$.ajax({
-    url: '/my-data/',
-    type: 'get',
-}).then(function (data) {
-    return $.ajax({
-        url: '/other-data/' + data,
-        type: 'get'
-    });
-}).then(function (data) {
-    return $.ajax({
-        url: '/other-data/' + data,
-        type: 'get'
-    });
-}).then(function (data) {
-    return $.ajax({
-        url: '/other-data/' + data,
-        type: 'get'
-    });
-}).then(function (data) {
-    console.log(data);
-});
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Then</h2>
-                        <p>promise.then() returns a promise.</p>
-                        <pre><code>
-var promise = $.ajax({
-    url: '/my-data/',
-    type: 'get',
-});
-
-var thenPromise = promise.then(function (data) {
-    console.log(data);
-});
-
-promise == thenPromise;//false
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Return Values</h2>
-                        <p>Then changes return behavior based on three circumstances:</p>
-                        <p>The callback returns...
-                        <ol>
-                            <li>undefined</li>
-                            <li>A promise object</li>
-                            <li>Other values</li>
-                        </ol>
-                    </section>
-                    <section>
-                        <h2>Return a undefined</h2>
-                        <pre><code>
-$.ajax({
-    url: '/my-data/',
-    type: 'get',
-}).then(function (data) {
-    console.log(data);
-}).then(function (sameData) {
-    console.log(sameData); //same as before
-});
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Return a promise</h2>
-                        <pre><code>
-$.ajax({
-    url: '/my-data/',
-    type: 'get',
-}).then(function (data) {
-    return $.ajax(
-        url: '/other-data/' + data,
-        type: 'get'
-    });
-}).then(function (otherData) {
-    console.log(otherData);// result of other data
-});
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Return a value</h2>
-                        <pre><code>
-$.ajax({
-    url: '/my-data/',
-    type: 'get',
-}).then(function (data) {
-    return 5;
-}).then(function (value) {
-    console.log(value);//5
-});
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Zen of Then</h2>
-                        <pre><code>
-promise.then(done, fail, progress);
-
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Other Methods</h2>
-                        <p>promise...</p>
+                        <h2>State</h2>
                         <ul>
-                            <li>.done()</li>
-                            <li>.fail()</li>
-                            <li>.progress()</li>
-                            <li>.always()</li>
+                            <li>unresolved</li>
+                            <li>resolved</li>
+                            <li>failure</li>
                         </ul>
                     </section>
+                    <section>
+                        <h2>Passing Behaviour</h2>
+                        <pre><code data-trim class="javascript">
+continuationFunction(x, callback);
+
+promiseFunction(x).then(callback);
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>And Then?</h2>
+                        <pre><code data-trim class="javascript">
+promise.then(done, fail, progress);
+                        </code></pre>
+                        <pre class="fragment"><code data-trim class="javascript">
+promise.done(callback);
+promise.fail(callback);
+promise.progress(callback);
+                        </code></pre>
+                        <pre class="fragment"><code data-trim class="javascript">
+promise.always(callback);
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Deferred</h2>
+                        <pre><code data-trim class="javascript">
+deferred.resolve(value); // fires done
+deferred.reject(value); // fires fail
+deferred.notify(value); // fires progress
+                        </code></pre>
+                        <pre><code data-trim class="javascript">
+deferred.state(); // returns current state: resolved|rejected|pending
+deferred.promise(); // returns a promise object linked to the Deferred
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Create Promises</h2>
+                        <pre><code data-trim class="javascript">
+promiseAdd = (x, y) => {
+   var d = $.Deferred();
+   setTimeout(function () {
+      d.resolve(x + y);
+   }, 100);
+   return d.promise();
+}
+promiseAdd(1, 2)
+    .then(result => console.log(result));
+// logs 3 after 100ms
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Returns A Values</h2>
+                        <p>It is composable!</p>
+                        <p><small>We'll get to that later.</small></p>
+                    </section>
+                    <section>
+                        <h2>Then Is The Key</h2>
+                    </section>
+                    <section>
+                        <h3>Then Returns A Promise</h3>
+                        <pre><code>
+promise = promiseFunction();
+newPromise = promise.then(callback);
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>3 Behaviors</h2>
+                    </section>
+                    <section>
+                        <h3>Chain Functions</h3>
+                        <pre><code>
+$.get(‘/sales-json/’)
+    .then(totalSales)
+    .then(total => {
+        $(‘#total-sales’).html(total);
+    });
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>Pass Promises Around</h3>
+                        <pre><code>
+promise = $.get(‘/url/’);
+promise.then(doThisOnDone);
+promise.then(doThisAtTheSameTime);
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>Sequence Events</h3>
+                        <pre><code>
+$.get(‘url’)
+    .then($.get.bind(null, ‘other-url’))
+    .then($.get.bind(null, ‘another-url’))
+    .then($.get.bind(null, ‘more-url’))
+    .then((moreData) => {
+       // holy shit that is fluent
+    });
+                        </code></pre>
+                    </section>
                 </section>
-                <section>
-                    <h2>Is It Just Alternate Syntax?</h2>
-                </section>
+
                 <section>
                     <section>
-                        <h2>Parallel and $.when()</h2>
-                        <p>More new toys! Yay!</p>
+                        <h1>Parallel</h1>
+                    </section>
+                    <section>
+                        <h2>$.when</h2>
                         <pre><code>
 $.when(
-    $.get('/my-data/'),
-    $.get('/my-template/')
-).then(function (data, template) {
-    var html = render(template, data);
-    $('body').html(html);
-})
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>$.when is hella meta</h2>
-                        <p>A promise of a group of promises.</p>
-                    </section>
-                    <section>
-                        <h3>This is possible via continuation-passing</h3>
-                        <p>But you don't want to see it.</p>
-                        <ul>
-                            <li>It is ugly</li>
-                            <li>Requires a lot of plumbing</li>
-                            <li>Very one offy</li>
-                            <li>It will end up looking like less elegant promises</li>
-                        </ul>
-                    </section>
-                </section>
-                <section>
-                    <h1>Review</h1>
-                    <ul>
-                        <li class="fragment">Promises allow us to attatch callbacks to future data</li>
-                        <li class="fragment">Promises can chain multiple functions and promises into one pipline</li>
-                        <li class="fragment">then, done, fail and progress return different promises based on their callback's return value</li>
-                        <li class="fragment">$.when allows us to parallelize promises into a single promise.</li>
-                    </ul>
-                </section>
-                <section>
-                    <h1>Here Be Dragons</h1>
-                    <p>I'm about to get opinionated</p>
-                </section>
-                <section>
-                    <h2>Promises are a superior Pattern</h2>
-                    <ol>
-                        <li>Respect seperation of concerns</li>
-                        <li>Observe the DRY principal</li>
-                        <li>Are functionaly composable</li>
-                        <li>Are more testable</li>
-                    </ol>
-                </section>
-                <section>
-                    <section>
-                        <h2>Seperation of Concerns</h2>
-                        <p>Continuation-passing encourages tight coupling of:</p>
-                        <ul>
-                            <li>data</li>
-                            <li>business logic</li>
-                            <li>view logic</li>
-                        </ul>
-                        <pre><code>
-$.ajax({
-    url: "/foo/",
-    success: function () {
-        //transform data
-        ...
-        console.log(trasformed);
-    }
+    $.get(‘url’),
+    $.get(‘other-url’),
+    $.get(‘another-url’),
+    $.get(‘more-url’)
+).then(allData => {
+   var data = allData[0],
+       otherData = allData[1],
+       anotherData = allData[2],
+       moreData = allData[3];
+   //Wow!
 });
                         </code></pre>
                     </section>
                     <section>
-                        <p>Promises seperate these into units of computation</p>
-                        <p>and binds them fluently</p>
+                        <h2>$.when Returns A Promise</h2>
                         <pre><code>
-function promiseData () {
-    return $.ajax(
-        url: '/foo/'
+$.when(
+    $.get(‘url’),
+    $.get(‘other-url’),
+).then(data => $.when(
+    $.get(‘another-url’, data[0]),
+    $.get(‘more-url’, data[1])
+)).then(finalData => {
+    //what elegant synchronization
+});
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Break Up Large Computation</h2>
+                        <pre><code>
+$.when(‘foo’)
+    .then(partialComputation)
+    .then(moreCompuation)
+    .then(justALittleMore)
+    .then((data) => {
+        // Phew! I’m glad we didn’t lock the ui.
     });
-}
-function transformData(data) {
-    ...
-}
-function log (data) {
-    console.log(data);
-}
-promiseData().then(transformData).then(log);
                         </code></pre>
                     </section>
                     <section>
-                        <h2>This is DRY</h2>
-                        <p>Do not Repeat Yourself</p>
-                    </section>
-                    <section>
-                        <h2>DRY encourages modularity</h2>
-                    </section>
-                </section>
-                <section>
-                    <section>
-                        <h2>Promises are composable</h2>
-                    </section>
-                    <section>
-                        <h2>Promises Are Values</h2>
+                        <h2>Test Case</h2>
                         <ul>
-                            <li class="fragment">Promises are functional style</li>
-                            <li class="fragment">Functional style treats functions as values or data representations</li>
-                            <li class="fragment">Functions that return promises are (in practice) pure functions</li>
+                            <li>Slow computation</li>
+                            <li>We need fast retrieval</li>
+                            <li>5 records return quickly</li>
                         </ul>
                     </section>
                     <section>
-                        <h2>Functional Purity</h2>
-                        <ul>
-                            <li class="fragment">Return a value</li>
-                            <li class="fragment">Return the same value given the same input (idempotent)</li>
-                            <li class="fragment">Cannot affect or be affected by outside values/state</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>Impure Function</h2>
-                        <pre class="fragment"><code>
-function log (message) {
-    console.log(message);
-}
-log('side effect');//undefined
-                        </code></pre>
-                        <pre class="fragment"><code>
-var i = 0;
-function crappyInc (digit) {
-    return i = i + digit;
-}
-crappyInc(1);//1
-crappyInc(1);//3
-crappyInc(crappyInc(1));//6
-console.log(i);//6
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Pure Function</h2>
+                        <h2>The Solution</h2>
                         <pre><code>
-function inc (digit) {
-    return digit + 1;
-}
-inc(2);//3
-inc(2);//3
-inc(2);//3
-                        </code></pre>
-                        <h2 class="fragment">Will it compose?</h2>
-                        <pre class="fragment"><code>
-inc(inc(1))//3
-                        </code></pre>
-                        <pre class="fragment"><code>
-[1, 2, 3].map(inc)//[2, 3, 4]
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>$.when and chaining</h2>
-                        <p>Are forms of composition</p>
-                        <p class="fragment">They  are not possible without return values</p>
-                    </section>
-                </section>
-                <section>
-                    <section>
-                        <h2>Testing</h2>
-                        <p>Put My Promises To The Test</p>
-                    </section>
-                    <section>
-                        <h2>Testing Relies on Idempotence</h2>
-                        <pre><code>
-function promiseStuff (foo) {
-    return $.get('/my-url/' + foo);
-}
-                        </code></pre>
-                        <p class="fragment">You cannot trust dependencies</p>
-                    </section>
-                    <section>
-                        <h2>Monkey Patching</h2>
-                        <pre><code>
-function promiseStuff (foo) {
-    return $.get('/my-url/' + foo);
-}
-//Redeclare the function
-function promiseStuff (test) {
-    var values = {test: 1};
-        d = $.Deferred();
-    setTimeout(function () {
-        d.resolve(values[foo]);
-    }, 0)
-    return d.promise();
-}
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Mock Helper</h2>
-                        <pre><code>
-function mockPromise () {
-    return function () {
-        var d = $.Deferred(),
-            args = arguments;
-        setTimeout(function () {
-            d.resolve.apply(null, args);
-        }, 0)
-        return d.promise();
-    }
-}
-promiseStuff = mockPromise(function (foo) {
-    var values = {test: 1};
-    return values[foo];
-});
-promiseStuff('test').then(log);//logs: 1
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Promises Encourage Modularity</h2>
-                        <p>Unit testing is concerned with computation not retrieval</p>
-                        <pre class="fragment"><code>
-function promiseStuff (foo) {
-    return $.get('/my-url/' + foo);
-}
-function transformData (data) {
-    return data + 1;
-}
-promiseStuff().then(transformData).then(log);
-                        </code></pre>
-                        <p class="fragment">transformData is idempotent and therefore testable</p>
-                    </section>
-                </section>
-                <section>
-                    <h1>Review</h1>
-                    <p>Promises...</p>
-                    <ol>
-                        <li>Respect seperation of concerns</li>
-                        <li>Observe the DRY principal</li>
-                        <li>Are functionaly composable</li>
-                        <li>Are more testable</li>
-                    </ol>
-                </section>
-
-                <section>
-                    <section>
-                        <h2>Extras</h2>
-                    </section>
-                    <section>
-                        <h2>Piping With Promises</h2>
-                        <pre><code>
-promisePipe = function () {
-    var d = $.Deferred(),
-        args = arguments;
-    setTimeout(function () {
-        d.resolve.apply(null, args);
-    }, 0);
-    return d.promise();
-}
-function inc (val) {
-    return val + 1;
-}
-function log (val) {
-   console.log(val);
-}
-promisePipe(7).then(inc).then(inc).then(log);
-console.log(20)
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Promise Worker</h2>
-                        <pre><code>
-promiseWorker = function (script, message) {
-    var d = $.Deferred(),
-        w;
-    if (typeof script == 'function') {
-        script = window.URL.createObjectURL(new Blob(['onmessage = ' + script.toString()]));
-    }
-    w = new Worker(script);
-    w.onmessage = function (e) {
-        d.resolve(e.data);
-    };
-    w.onerror = function (e) {
-        d.reject(e);
-    };
-    d.always(function () {
-        if (script.substring && script.substring(0, 5) === 'blob:') {
-            window.URL.revokeObjectURL(script);
+//Reusable Functions
+var chunk = (size, a) => {
+        var chunked = [];
+        for (var i = 0; i < a.length; i += size) {
+            chunked.push(a.slice(i, i + size));
         }
-        w.terminate();
-    });
-    w.postMessage(message);
-    return d.promise();
-}
-//script worker
-promiseWorker('foo.js', ['data', 'set', 'for', 'worker']);
-//inline inline
-promiseWorker(function (e) {
-    postMessage(e.data.map(function (d) {
-        return d.toUpperCase();
-    }));
-}, ['inline', 'worker', 'data']).then(function (data) {
-    console.log(data)
+        return chunked;
+    },
+    promiseGetIDs = (url, idArray) => $.get(url, {ids: idArray});
+
+//One Off Implementation
+var idList = [1, 2, 3, 4…],
+    promises = chunk(5, idList).map(
+        promiseGetIDs.bind(null, ‘/big-computation/’)
+    );
+
+$.when.apply(null, promises).then(data => {
+   //do something with all that data
 });
                         </code></pre>
+                    </section>
+                    <section>
+                        <h2>You Can Build It</h2>
                     </section>
                 </section>
 
                 <section>
-                    <h1>Any Negatives?</h1>
-                </section>
-
-                <section>
-                    <h1>Questions?</h1>
+                    <section>
+                        <h1>Review</h1>
+                    </section>
+                    <section>
+                        <h2>Async and Continuation Passing</h2>
+                    </section>
+                    <section>
+                        <h2>Promises</h2>
+                    </section>
                 </section>
 
 			</div>
