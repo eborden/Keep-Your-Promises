@@ -65,7 +65,7 @@
 
                     <section>
                         <img src="./usm.jpg" alt="Union Street Media" /><br />
-                        <img src="./usm.png" alt="Union Street Media" />
+                        <img src="./usm.png" alt="Union Street Media" style="border:0;background:transparent;box-shadow: none;" />
                     </section>
 
                     <section>
@@ -231,7 +231,7 @@ array.filter(x => x > 2);
                         <h1>Why Not Async?</h1>
                     </section>
                     <section>
-                        <h2>Side Effects and Composition</h2>
+                        <h2>Side Effects &amp; Composition</h2>
                     </section>
                     <section>
                         <h2>Side Effects</h2>
@@ -599,6 +599,88 @@ $.when.apply(null, promises).then(data => {
                     </section>
                 </section>
 
+                <section>
+                    <section>
+                        <h1>Error Handling</h1>
+                    </section>
+                    <section>
+                        <h2>Error Queue</h2>
+                        <pre><code>
+promise.fail(callback);
+promise.then(success, fail);
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Errors Bubble</h2>
+                        <pre><code>
+promise.then(callback1)
+    .then(callback2) // Errors that occur here
+    .then(callback3)
+    .then(callback4, errorHandler); // Bubble to here
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Thrown Errors</h2>
+                        <pre><code>
+try {
+    promise.then(callback1)
+        .then(callback2) // Errors that occur here
+        .then(callback3)
+        .then(callback4, errorHandler); // Bubble to here
+} catch (e) {
+    errorHandler(e);
+}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Error Swallowing</h2>
+                        <h3>Can Be Dangerous</h3>
+                    </section>
+                    <section>
+                        <h2>Terminating The Chain</h2>
+                        <pre><code>
+promise.then(func1)
+    .done(); // Not jQuery’s done, this terminates the chain 
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Garbage Collection</h2>
+                        <pre><code>
+function () {
+    promise.then(func1)
+        .then(func2) //Error Thrown
+        .then(func3)
+} //Promise gets garbage collected
+  //Error thrown
+                        </code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>Testing</h1>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>Promises In Node</h1>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>The Future</h1>
+                        <h3>Of Promises</h3>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>More Concurrency</h1>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>Negatives</h1>
+                    </section>
+                </section>
 			</div>
 
 		</div>
