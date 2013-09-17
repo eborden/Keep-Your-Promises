@@ -32,6 +32,7 @@
             .reveal .cloud li:nth-child(8){font-size: 1em;}
             .reveal .cloud li:nth-child(9){font-size: .9em;}
             .reveal .cloud li:nth-child(10){font-size: 1.5em;}
+            .reveal blockquote em {color: red;}
         </style>
 
 		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
@@ -63,7 +64,7 @@
                         <h2>Evan Rutledge Borden</h2>
                         <h3>@evanborden</h3>
                         <h4>FB/evan.borden</h4>
-                        <h5><small>IN/evanborden</small></h5>
+                        <h5><small>in/eborden</small></h5>
                     </section>
 
                     <section>
@@ -77,6 +78,10 @@
 
                     <section>
                         <img src="./haskell.png" alt="Haskell" />
+                    </section>
+
+                    <section>
+                        <img src="./little-horse.jpg" alt="little horse" />
                     </section>
                 </section>
 
@@ -128,17 +133,23 @@
                     </section>
                     <section>
                         <h2>Alternate Syntax</h2>
-                        <pre><code data-trim class="javascript">
+                        <pre class="fragment"><code data-trim class="javascript">
 function add (x, y) {
     return x + y;
 }
 
+add = function (x, y) {
+    return x + y;
+};
+                        </code></pre>
+                        <pre class="fragment"><code data-trim class="javascript">
 add = (x, y) => x + y;
 
 add = (x, y) => {
     return x + y;
 }
-
+                        </code></pre>
+                        <pre class="fragment"><code data-trim class="javascript">
 constant = x => x;
                         </code></pre>
                         <p class="fragment">There Are Other Rules</p>
@@ -194,6 +205,34 @@ console.log(x);
                         <p><small>Courtesy of Mozilla</small></p>
                     </section>
                     <section>
+                        <h2>Hello Async</h2>
+                        <pre><code data-trim class="javascript">
+var x = ‘hello’;
+
+setTimeout(() => {
+    x = ‘world’;
+    console.log(x);
+}, 100);
+
+console.log(x);
+//hello
+//world
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Hello Sync</h2>
+                        <pre><code data-trim class="javascript">
+var x = ‘hello’;
+console.log(x); //hello
+
+//wait 100ms
+sleep(100); 
+
+x = ‘world’;
+console.log(x); //world
+                        </code></pre>
+                    </section>
+                    <section>
                         <h2>Async Is Hard</h2>
                         <p>Complicated, unpredictable, hard to reason about.</p>
                     </section>
@@ -231,8 +270,8 @@ $.get(‘/my-url/’, (result) => {
                     <section>
                         <h2>High Order Functions</h2>
                         <pre><code data-trim class="javascript">
-array.map(x => x + 1);
-array.filter(x => x > 2);
+array.map(x => x + 1)
+     .filter(x => x > 2);
                         </code></pre>
                     </section>
                 </section>
@@ -250,12 +289,13 @@ array.filter(x => x > 2);
 x = 0;
 iterate = () => x++;
 
-iterate();
+iterate(); // 1
 
 // x = 1
                         </code></pre>
                     </section>
                     <section>
+                        <h2>Must Affect State</h2>
                         <pre><code data-trim class="javascript">
 $.get(‘/url/’, (string) => {
     string.toUpperCase(); // This is useless and not affecting state
@@ -275,10 +315,12 @@ $.get(‘/url/’, (string) => {
                         <h3>Encourges Bad Stateful Practice</h3>
                         <pre><code data-trim class="javascript">
 $.get(‘/sales-history/’, (salesJson) => {
-   var totalSales = 0; 
+   var totalSales = 0;
+
    for (var i = 0, l = salesJson.length; i < l; i++) {
       totalSales += salesJson[i].price;
    }
+
    //inserts some number
    $(‘#total-sales’).text(totalSales);
 }, ‘json’);
@@ -318,14 +360,13 @@ $.get(‘url’, (data) => {
                         <h2>Parrallel</h2>
                         <pre><code data-trim class="javascript">
 var state = [],
-        timer = false,
+    timer = false,
     observe = (state, index) => (data) => state[index] = data,
     collectUnfufilled = () => state.filter(x => x == undefined);
 
 $.get(‘url’, observe(state, 0));
 $.get(‘other-url’, observe(state, 1));
 $.get(‘another-url’, observe(state, 2));
-$.get(‘more-url’, observe(state, 3));
 
 timer = setInterval(function () {
     if (!collectUnfulfilled().length && state.length == 4) {
@@ -353,19 +394,14 @@ async.parallel([
         $.get(‘another-url’, (anotherData) => {
             resolver(null, anotherData);
         });
-    },
-   resolver => {
-        $.get(‘more-url’, (moreData) => {
-            resolver(null, moreData);
-        });
-    },
+    }
 ], (errors, results) => {
     //do things
 });
                         </code></pre>
                     </section>
                     <section>
-                        <h2>Yo Dawg!</h2>
+                        <img src="./yo-dawg.png" alt="Yo Dawg! I heard you like functions!" />
                     </section>
                 </section>
                 <section>
@@ -396,7 +432,7 @@ $(‘#total-sales’).html(
                         <pre><code data-trim class="javascript">
 $(‘#total-sales’).html(
     totalSales(
-        $.get.bind(null, ‘/sales-history/’, ‘json’)));
+        $.get(‘/sales-history/’, ‘json’)));
 //Error
                         </code></pre>
                     </section>
@@ -461,13 +497,16 @@ promise.always(callback);
                         </code></pre>
                     </section>
                     <section>
+                        <h2>Where do Promises come from?</h2>
+                    </section>
+                    <section>
                         <h2>Deferred</h2>
-                        <pre><code data-trim class="javascript">
+                        <pre class="fragment"><code data-trim class="javascript">
 deferred.resolve(value); // fires done
 deferred.reject(value); // fires fail
 deferred.notify(value); // fires progress
                         </code></pre>
-                        <pre><code data-trim class="javascript">
+                        <pre class="fragment"><code data-trim class="javascript">
 deferred.state(); // returns current state: resolved|rejected|pending
 deferred.promise(); // returns a promise object linked to the Deferred
                         </code></pre>
@@ -493,7 +532,8 @@ promiseAdd(1, 2)
                         <p><small>We'll get to that later.</small></p>
                     </section>
                     <section>
-                        <h2>Then Is The Key</h2>
+                        <h1>Then</h1>
+                        <h2 class="fragment">Is The Powerful</h2>
                     </section>
                     <section>
                         <h3>Then Returns A Promise</h3>
@@ -503,7 +543,13 @@ newPromise = promise.then(callback);
                         </code></pre>
                     </section>
                     <section>
-                        <h2>3 Behaviors</h2>
+                    <h2>3 Behaviors</h2>
+                    <p class="fragment">If the callback returns...</p>
+                    <ul>
+                        <li class="fragment">undefined</li>
+                        <li class="fragment">a value</li>
+                        <li class="fragment">a promise</li>
+                    </ul>
                     </section>
                     <section>
                         <h3>Chain Functions</h3>
@@ -733,10 +779,76 @@ async = () => new RSVP.Promise((fulfill, reject) => {
                     <section>
                         <h1>Testing</h1>
                     </section>
+                    <section>
+                        <h2>Unit Testing</h2>
+                    </section>
+                    <section>
+                        <h2>Jasmine</h2>
+                        <pre><code class="javascript">
+div = (x, y) => x / y;
+
+describe("div function", () => {
+    it("divides small from large", () {
+        expects(div(10, 5)).toBe(2);
+    });
+    it("returns decimals for large from small", () {
+        expects(div(5, 10)).toBe(.5);
+    });
+    it("returns Infinity on division by 0", () {
+        expects(div(10, 0)).toBe(Infinity);
+    });
+    //...more test cases
+});
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Done</h2>
+                        <pre><code class="javascript">
+describe("promise function", () => {
+    it("returns async", (done) {
+        promiseFunc().then(data => {
+            expects(data).toBe(/*...*/);
+            done();
+        });
+    });
+});
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Seperation Of Concerns</h2>
+                        </section>
+                        <section>
+                        <h3>Test Computation -- Not Retrieval</h3>
+                        <pre><code class="javascript">
+describe("Test suite for sales calculation", function() {
+
+    salesMock = [{price: 45000}, ...];
+
+    it("Total sales returns sum of all sales", function() {
+        expect(totalSales(salesMock)).toBe(1000000);
+    });
+});
+                        </code></pre>
+                    </section>
                 </section>
                 <section>
                     <section>
                         <h1>Promises In Node</h1>
+                    </section>
+                    <section>
+                        <h2>Node had promises</h2>
+                    </section>
+                    <section>
+                        <h2>Standard Library Facades</h2>
+                    </section>
+                    <section>
+                        <h2>Promisify</h2>
+                        <pre><code class="javascript">
+Q.nfbind();
+Q.nfcall();
+Q.nfapply();
+deferred.promisify(); 
+                        </code></pre>
                     </section>
                 </section>
                 <section>
@@ -744,16 +856,101 @@ async = () => new RSVP.Promise((fulfill, reject) => {
                         <h1>The Future</h1>
                         <h3>Of Promises</h3>
                     </section>
+                    <section>
+                        <h2>Promises/A+</h2>
+                    </section>
+                    <section>
+                        <h2>Thenable</h2>
+                    </section>
+                    <section>
+                        <h3>Important Features</h3>
+                        <ul>
+                            <li>Progress behavior has been removed</li>
+                            <li>Asynchronous chaining is gauranteed</li>
+                            <li>Multiple events on a single promise must be strictly ordered</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>DOM Promises</h2>
+                    </section>
+                    <section>
+                        <h2>ES7 Promises</h2>
+                    </section>
                 </section>
                 <section>
                     <section>
                         <h1>More Concurrency</h1>
+                    </section>
+                    <section>
+                        <h2>Web Workers</h2>
+                        <p>JavaScript Threads</p>
+                    </section>
+                    <section>
+                        <h3>Events Listeners and Messages</h3>
+                        <pre><code class="javascript">
+var w = new Worker(‘my-script.js’);
+w.onmessage = e => {
+    console.log(e.data);
+};
+w.onerror = e => {
+    //handle the error
+};
+w.postMessage(message);
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Wrong Paradigm</h2>
+                        <blockquote>
+                            <p>A promise represents the eventual value returned from the <em>single completion</em> of an operation.</p>
+                        </blockquote>
+                    </section>
+                    <section>
+                        <h2>Single Use Workers</h2>
+                    </section>
+                    <section>
+                        <h3>One Time Worker</h3>
+                        <pre><code data-trim class="javascript">
+promiseWorker = (script, message) => {
+    var d = $.Deferred(),
+        w = new Worker(script);
+
+    w.onmessage = e => d.resolve(e.data);
+    w.onerror = e => d.reject(e);
+
+    d.always(() => w.terminate());
+
+    w.postMessage(message);
+    return d.promise();
+}
+
+//One use worker
+promiseWorker('foo.js', ['data', 'set', 'for', 'worker'])
+    .then(data => console.log(data));
+
+                        </code></pre>
                     </section>
                 </section>
                 <section>
                     <section>
                         <h1>Negatives</h1>
                     </section>
+                    <section>
+                        <h2>Promises Are Slower</h2>
+                    </section>
+                    <section>
+                        <h2>Promises/A+</h2>
+                        <h3>Is Even Slower</h3>
+                    </section>
+                    <section>
+                        <h2>No Excuse</h2>
+                        <h3>For jQuery</h3>
+                    </section>
+                </section>
+                <section>
+                    <h1>Conclusions</h1>
+                </section>
+                <section>
+                    <h1>Questions?</h1>
                 </section>
 			</div>
 
