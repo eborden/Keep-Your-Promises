@@ -55,12 +55,15 @@
                         <h1>Keep Your Promises</h1>
                         <h3>and avoid nasty callbacks</h3>
                         <p>
-                            <small>Created by <a href="http://www.evan-borden.com">Evan Borden</a> / <a href="http://twitter.com/evanborden">@evanborden</a></small>
+                            <small><a href="http://www.evan-borden.com">Evan Borden</a> / <a href="http://twitter.com/evanborden">@evanborden</a></small>
                         </p>
                     </section>
                     
                     <section>
                         <h2>Evan Rutledge Borden</h2>
+                        <h3>@evanborden</h3>
+                        <h4>FB/evan.borden</h4>
+                        <h5><small>IN/evanborden</small></h5>
                     </section>
 
                     <section>
@@ -126,15 +129,17 @@
                     <section>
                         <h2>Alternate Syntax</h2>
                         <pre><code data-trim class="javascript">
-function (a, b) {
-    return a + b;
+function add (x, y) {
+    return x + y;
 }
 
-(a, b) => a + b;
+add = (x, y) => x + y;
 
-(a, b) => {
-    return a + b;
+add = (x, y) => {
+    return x + y;
 }
+
+constant = x => x;
                         </code></pre>
                         <p class="fragment">There Are Other Rules</p>
                     </section>
@@ -150,6 +155,11 @@ function (a, b) {
                         </blockquote>
                         <small>Carl Sagan</small>
                     </section>
+
+                    <section>
+                        <h2>Code That Diverges</h2>
+                    </section>
+
                     <section>
                         <h2>Async In Javascript</h2>
                         <ul>
@@ -160,6 +170,7 @@ function (a, b) {
                         </ul>
                     </section>
                     <section>
+                        <h2>Hello Async</h2>
                         <pre><code data-trim class="javascript">
 var x = ‘hello’;
 
@@ -235,6 +246,14 @@ array.filter(x => x > 2);
                     </section>
                     <section>
                         <h2>Side Effects</h2>
+                        <pre><code data-trim class="javascript">
+x = 0;
+iterate = () => x++;
+
+iterate();
+
+// x = 1
+                        </code></pre>
                     </section>
                     <section>
                         <pre><code data-trim class="javascript">
@@ -264,7 +283,7 @@ $.get(‘/sales-history/’, (salesJson) => {
    $(‘#total-sales’).text(totalSales);
 }, ‘json’);
                         </code></pre>
-                        <p>Very one off</p>
+                        <p class="fragment">Very one off</p>
                     </section>
                     <section>
                         <h2>Refactored and DRY</h2>
@@ -351,7 +370,10 @@ async.parallel([
                 </section>
                 <section>
                     <section>
-                        <h1>Not Composable</h1>
+                        <h1>Composition</h1>
+                    </section>
+                    <section>
+                        <h2>Not Composable</h2>
                     </section>
                     <section>
                         <h2>Synchronous</h2>
@@ -370,7 +392,7 @@ $(‘#total-sales’).html(
                         </code></pre>
                     </section>
                     <section>
-                        <h2>Async Isn't Composable</h2>
+                        <h2>Not Composable</h2>
                         <pre><code data-trim class="javascript">
 $(‘#total-sales’).html(
     totalSales(
@@ -383,9 +405,12 @@ $(‘#total-sales’).html(
                     </section>
                 </section>
 
-				<section>
+                <section>
                     <section>
-                        <h2>Promises</h2>
+                        <h1>Promises</h1>
+                    </section>
+                    <section>
+                        <h2>Promise</h2>
                         <blockquote>
                             A declaration or assurance that one will do a particular thing or that a particular thing will happen.
                         </blockquote>
@@ -393,15 +418,24 @@ $(‘#total-sales’).html(
                     </section>
                     <section>
                         <h2>Promises/A</h2>
-                        <blockquote>A promise represents the eventual value returned from the single completion of an operation</blockquote>
+                        <blockquote>A promise represents the eventual value returned from the single completion of an operation.</blockquote>
                         <small><a href="http://wiki.commonjs.org/wiki/Promises/A">Common JS Spec</a></small>
                     </section>
                     <section>
+                        <h2>Object</h2>
+                    </section>
+                    <section>
                         <h2>State</h2>
+                    </section>
+                    <section>
+                        <h2>Event Queue</h2>
+                    </section>
+                    <section>
+                        <h2>States</h2>
                         <ul>
-                            <li>unresolved</li>
-                            <li>resolved</li>
-                            <li>failure</li>
+                            <li class="fragment">unresolved</li>
+                            <li class="fragment">resolved</li>
+                            <li class="fragment">failure</li>
                         </ul>
                     </section>
                     <section>
@@ -652,6 +686,46 @@ function () {
         .then(func3)
 } //Promise gets garbage collected
   //Error thrown
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Not All Promises Are Alike</h2>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>What is wrong?</h2>
+                        <pre><code>
+async = () => {
+    var def = when.defer();
+    setTimeout(() => {
+        //...does something
+        def.fulfill(x);
+    }, 10);
+    return def.promise();
+}
+                        </code></pre>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>What is wrong?</h2>
+                        <pre><code>
+async = () => {
+    var def = when.defer();
+    setTimeout(() => {
+        //...throws an error
+        def.fulfill(x);
+    }, 10);
+    return def.promise();
+}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Swallow Everything!</h2>
+                        <pre><code>
+async = () => new RSVP.Promise((fulfill, reject) => {
+    setTimeout(() => {
+        //do something
+        fulfill(x);
+    }, 10);
+});
                         </code></pre>
                     </section>
                 </section>
