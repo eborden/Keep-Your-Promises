@@ -684,14 +684,14 @@ $.when.apply(null, promises).then(data => {
                         <h1>Error Handling</h1>
                     </section>
                     <section>
-                        <h2>Error Queue</h2>
+                        <h2>Rejection Queue</h2>
                         <pre><code>
 promise.fail(callback);
 promise.then(success, fail);
                         </code></pre>
                     </section>
                     <section>
-                        <h2>Errors Bubble</h2>
+                        <h2>Rejections Bubble</h2>
                         <pre><code>
 promise.then(callback1)
     .then(callback2) // Errors that occur here
@@ -700,11 +700,11 @@ promise.then(callback1)
                         </code></pre>
                     </section>
                     <section>
-                        <h2>Thrown Errors</h2>
+                        <h2>Thrown Exceptions</h2>
                         <pre><code>
 try {
     promise.then(callback1)
-        .then(callback2) // Errors that occur here
+        .then(callback2) // Error that occur here
         .then(callback3)
         .then(callback4, errorHandler); // Bubble to here
 } catch (e) {
@@ -713,8 +713,17 @@ try {
                         </code></pre>
                     </section>
                     <section>
-                        <h2>Error Swallowing</h2>
+                        <h2>Exception Swallowing</h2>
                         <h3>Can Be Dangerous</h3>
+                    </section>
+                    <section>
+                        <h2>Silenced Exception</h2>
+                        <pre><code>
+promise.then(callback1)
+    .then(callback2) // Exception thrown
+    .then(callback3)
+    .then(callback4);
+                        </code></pre>
                     </section>
                     <section>
                         <h2>Terminating The Chain</h2>
@@ -735,9 +744,10 @@ function () {
                         </code></pre>
                     </section>
                     <section>
-                        <h2>Not All Promises Are Alike</h2>
+                        <h2>Exception Handling</h2>
+                        <p>Not All Promises Are Alike</p>
                     </section>
-                    <section data-transition="fade">
+                    <section>
                         <h2>What is wrong?</h2>
                         <pre><code>
 async = () => {
@@ -750,13 +760,13 @@ async = () => {
 }
                         </code></pre>
                     </section>
-                    <section data-transition="fade">
+                    <section>
                         <h2>What is wrong?</h2>
                         <pre><code>
 async = () => {
     var def = when.defer();
     setTimeout(() => {
-        //...throws an error
+        throw Error('Bloody hell!');
         def.fulfill(x);
     }, 10);
     return def.promise();
@@ -769,6 +779,7 @@ async = () => {
 async = () => new RSVP.Promise((fulfill, reject) => {
     setTimeout(() => {
         //do something
+        throw Error('Bloody hell!');
         fulfill(x);
     }, 10);
 });
@@ -802,7 +813,7 @@ describe("div function", () => {
                         </code></pre>
                     </section>
                     <section>
-                        <h2>Done</h2>
+                        <h2>Another Done</h2>
                         <pre><code class="javascript">
 describe("promise function", () => {
     it("returns async", (done) {
@@ -815,7 +826,7 @@ describe("promise function", () => {
                         </code></pre>
                     </section>
                     <section>
-                        <h2>Seperation Of Concerns</h2>
+                        <h2>Separation Of Concerns</h2>
                         </section>
                         <section>
                         <h3>Test Computation -- Not Retrieval</h3>
@@ -872,6 +883,11 @@ deferred.promisify();
                     </section>
                     <section>
                         <h2>DOM Promises</h2>
+                        <pre><code class="javascript">
+promise = new Promise((resolve, reject) => {
+    resolve('value');
+});
+                        </code></pre>
                     </section>
                     <section>
                         <h2>ES7 Promises</h2>
@@ -935,15 +951,16 @@ promiseWorker('foo.js', ['data', 'set', 'for', 'worker'])
                         <h1>Negatives</h1>
                     </section>
                     <section>
-                        <h2>Promises Are Slower</h2>
+                        <h2>Promises</h2>
+                        <h3>Are not as performant</h3>
                     </section>
                     <section>
                         <h2>Promises/A+</h2>
                         <h3>Is Even Slower</h3>
                     </section>
                     <section>
-                        <h2>No Excuse</h2>
-                        <h3>For jQuery</h3>
+                        <h2>jQuery Promises</h2>
+                        <h3>No Excuses</h3>
                     </section>
                 </section>
                 <section>
