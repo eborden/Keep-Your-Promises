@@ -535,7 +535,7 @@ promiseAdd(1, 2)
                     </section>
                     <section>
                         <h3>Then Returns A Promise</h3>
-                        <pre><code>
+                        <pre><code class="javascript">
 promise = promiseFunction();
 newPromise = promise.then(callback);
                         </code></pre>
@@ -551,7 +551,7 @@ newPromise = promise.then(callback);
                     </section>
                     <section>
                         <h3>Chain Functions</h3>
-                        <pre><code>
+                        <pre><code class="javascript">
 $.get(‘/sales-json/’)
     .then(totalSales)
     .then(total => {
@@ -561,7 +561,7 @@ $.get(‘/sales-json/’)
                     </section>
                     <section>
                         <h3>Pass Promises Around</h3>
-                        <pre><code>
+                        <pre><code class="javascript">
 promise = $.get(‘/url/’);
 
 promise.then(doThisOnDone);
@@ -572,7 +572,7 @@ doSomething(promise);
                     </section>
                     <section>
                         <h3>Sequence Async Events</h3>
-                        <pre><code>
+                        <pre><code class="javascript">
 $.get(‘url’)
     .then($.get.bind(null, ‘other-url’))
     .then($.get.bind(null, ‘another-url’))
@@ -590,7 +590,7 @@ $.get(‘url’)
                     </section>
                     <section>
                         <h2>$.when</h2>
-                        <pre><code>
+                        <pre><code class="javascript">
 $.when(
     $.get(‘url’),
     $.get(‘other-url’),
@@ -607,7 +607,7 @@ $.when(
                     </section>
                     <section>
                         <h2>$.when Returns A Promise</h2>
-                        <pre><code>
+                        <pre><code class="javascript">
 $.when(
     $.get(‘url’),
     $.get(‘other-url’),
@@ -621,7 +621,7 @@ $.when(
                     </section>
                     <section>
                         <h2>Break Up Large Computation</h2>
-                        <pre><code>
+                        <pre><code class="javascript">
 $.when(‘foo’)
     .then(partialComputation)
     .then(moreCompuation)
@@ -632,16 +632,17 @@ $.when(‘foo’)
                         </code></pre>
                     </section>
                     <section>
-                        <h2>Test Case</h2>
+                        <h2>Case Study</h2>
                         <ul>
-                            <li>Slow computation</li>
-                            <li>We need fast retrieval</li>
-                            <li>5 records return quickly</li>
+                            <li class="fragment">We have a list of IDs</li>
+                            <li class="fragment">Record retrieval is slow</li>
+                            <li class="fragment">We need them fast</li>
+                            <li class="fragment">5 records return quickly</li>
                         </ul>
                     </section>
                     <section>
                         <h2>The Solution</h2>
-                        <pre><code>
+                        <pre><code class="javascript">
 //Reusable Functions
 var chunk = (size, a) => {
         var chunked = [];
@@ -651,12 +652,12 @@ var chunk = (size, a) => {
         return chunked;
     },
     promiseGetIDs = (url, idArray) => $.get(url, {ids: idArray});
-
+                        </code></pre>
+                        <pre><code class="javascript">
 //One Off Implementation
 var idList = [1, 2, 3, 4…],
-    promises = chunk(5, idList).map(
-        promiseGetIDs.bind(null, ‘/big-computation/’)
-    );
+    promises = chunk(5, idList)
+        .map(promiseGetIDs.bind(null, ‘/big-computation/’));
 
 $.when.apply(null, promises).then(data => {
    //do something with all that data
