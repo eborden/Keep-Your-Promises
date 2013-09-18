@@ -395,9 +395,7 @@ async.parallel([
             resolver(null, anotherData);
         });
     }
-], (errors, results) => {
-    //do things
-});
+], (errors, results) => /*do things*/);
                         </code></pre>
                     </section>
                     <section>
@@ -565,12 +563,15 @@ $.get(‘/sales-json/’)
                         <h3>Pass Promises Around</h3>
                         <pre><code>
 promise = $.get(‘/url/’);
+
 promise.then(doThisOnDone);
 promise.then(doThisAtTheSameTime);
+
+doSomething(promise);
                         </code></pre>
                     </section>
                     <section>
-                        <h3>Sequence Events</h3>
+                        <h3>Sequence Async Events</h3>
                         <pre><code>
 $.get(‘url’)
     .then($.get.bind(null, ‘other-url’))
